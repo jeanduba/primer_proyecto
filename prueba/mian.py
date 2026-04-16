@@ -64,7 +64,7 @@ while True:
  fin1 = input ("desea calcular otra vez-")
 
  if fin1 == "no":
-  print("fin")
+  print("FIN")
   break
 
  
