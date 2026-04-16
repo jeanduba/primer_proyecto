@@ -1,67 +1,69 @@
 print("Bienvenido")
-input ("Coloque lo que desea calcular")
+input ("Coloque lo que desea calcular-Enter para continuar")
 
 
-numero = input ()
-expresion = input ()
-numero2 = input ()
+numero = input ("Primer numero-")
+expresion = input ("Expresion-")
+numero2 = input ("Segundo numero-")
 
-resultadosuma = int(numero) + int(numero2)
-
-resultadoresta = int(numero) - int (numero2)
-
-resultadomultiplicacion = int(numero) * int(numero2)
-
-resultadodivision = int (numero) / int(numero2)
 
 if expresion == "+":
+ resultadosuma = int(numero) + int(numero2)
  print(resultadosuma)
 
 if  expresion == "-":
+ resultadoresta = int(numero) - int (numero2)
  print(resultadoresta)
 
 if expresion  == "*":
+ resultadomultiplicacion = int(numero) * int(numero2)
  print(resultadomultiplicacion)
 
 if expresion == "/":
- print(resultadodivision)
-
-
+  if int(numero2) == 0:
+      print("error")
+  else:
+   resultadodivision = int(numero) / int(numero2)
+   print(resultadodivision)
+ 
+   
 fin1 = input ("desea calcular otra vez-")
+
 
 while True:
  if fin1  == "si":
   (print("Bienvenido"))
-  input ("Que desea calcular")
+  input ("Coloque lo que desea calcular-Enter para continuar")
 
-  numero = input ()
-  expresion = input ()
-  numero2 = input ()
+  numero = input ("Primer numero-")
+  expresion = input ("Expresion-")
+  numero2 = input ("Segundo numero-")
 
-  resultadosuma = int(numero) + int(numero2)
-
-  resultadoresta = int(numero) - int (numero2)
-
-  resultadomultiplicacion = int(numero) * int(numero2)
-
-  resultadodivision = int (numero) / int(numero2)
 
   if expresion == "+":
+   resultadosuma = int(numero) + int(numero2)
    print(resultadosuma)
 
   if  expresion == "-":
+   resultadoresta = int(numero) - int (numero2)
    print(resultadoresta)
 
   if expresion  == "*":
+   resultadomultiplicacion = int(numero) * int(numero2)
    print(resultadomultiplicacion)
 
   if expresion == "/":
-   print(resultadodivision)
+    if int(numero2) == 0:
+        print("error")
+    else:
+     resultadodivision = int(numero) / int(numero2)
+     print(resultadodivision)
+   
+ 
+  
+ fin1 = input ("desea calcular otra vez-")
 
-
-  fin1 = input ("desea calcular otra vez-")
-
- elif fin1 == "no":
+ if fin1 == "no":
   print("fin")
   break
 
