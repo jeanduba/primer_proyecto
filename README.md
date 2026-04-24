@@ -1,45 +1,40 @@
-### Diagrama de Flujo de la Calculadora
-
-```mermaid
-[graph TD
-    %% Inicio del programa
-    Start([Inicio del Programa]) --> Welcome[/Bienvenido <br> Coloque lo que desea calcular/]
-    Welcome --> Node2((2))
-
-    %% Ciclo principal
-    Node2 --> InputNums[/Ingresar n1 y n2/]
-    InputNums --> Process[Suma = n1 + n2 <br> Resta = n1 - n2 <br> Multiplicación = n1 * n2 <br> División = n1 / n2]
-    Process --> InputOp[/Ingresar tipo de operación <br> + , - , * , / /]
-
-    %% Estructura de decisión (Operaciones)
-    InputOp --> IsSum{Es +}
-    IsSum -- Sí --> ResSum[/Resultado de la Suma/]
+graph TD
+    Inicio([INICIO DEL PROGRAMA]) --> Bienvenida[/BIENVENIDO <br> COLOQUE LO QUE DESEA CALCULAR/]
     
-    IsSum -- No --> IsSub{Es -}
-    IsSub -- Sí --> ResSub[/Resultado de la Resta/]
+    Bienvenida --> Procesos[Suma = n1 + n2 <br> Resta = n1 - n2 <br> Multiplicación = n1 * n2 <br> División = n1 / n2]
     
-    IsSub -- No --> IsMult{Es *}
-    IsMult -- Sí --> ResMult[/Resultado de la Multiplicación/]
+    Procesos --> IngresarN[/INGRESAR n1 y n2/]
     
-    IsMult -- No --> IsDiv{Es /}
+    IngresarN --> TipoOp[/INGRESAR TIPO DE OPERACIÓN <br> + , - , * , //]
     
-    %% Validación de división por cero
-    IsDiv -- Sí --> CheckZero{n2 = 0}
-    CheckZero -- Sí --> Error[/ERROR: No se puede dividir entre 0/]
-    Error --> Node1((1))
-    Node1 --> InputNums
+    TipoOp --> EsSuma{ES +}
     
-    CheckZero -- No --> ResDiv[/Resultado de la División/]
+    EsSuma -- SI --> ResSuma[/RESULTADO DE LA SUMA/]
+    EsSuma -- NO --> EsResta{ES -}
+    
+    EsResta -- SI --> ResResta[/RESULTADO DE LA RESTA/]
+    EsResta -- NO --> EsMult{ES *}
+    
+    EsMult -- SI --> ResMult[/RESULTADO DE LA MULTIPLICACIÓN/]
+    EsMult -- NO --> EsDiv{ES /}
+    
+    EsDiv -- SI --> CheckCero{n2 = 0}
+    
+    CheckCero -- NO --> ResDiv[/RESULTADO DE LA DIVISIÓN/]
+    CheckCero -- SI --> Error[/ERROR: DIVISIÓN POR CERO/]
+    
+    ResSuma --> OtroCalc[/¿HACER OTRO CÁLCULO?/]
+    ResResta --> OtroCalc
+    ResMult --> OtroCalc
+    ResDiv --> OtroCalc
+    Error --> OtroCalc
+    
+    OtroCalc --> Decidir{OTRO CÁLCULO}
+    
+    Decidir -- SI --> Bienvenida
+    Decidir -- NO --> Fin[/FIN/]
+    
+    Fin --> Terminar([FIN DEL PROGRAMA])
 
-    %% Fin del ciclo / Reinicio
-    ResSum --> AskNext[/¿Hacer otro cálculo?/]
-    ResSub --> AskNext
-    ResMult --> AskNext
-    ResDiv --> AskNext
-
-    AskNext --> Choice{Otro cálculo}
-    Choice -- Sí --> Node2
-    Choice -- No --> EndMsg[/Fin/]
-    EndMsg --> End([Fin del Programa])]
 
   
