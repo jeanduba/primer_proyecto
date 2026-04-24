@@ -1,5 +1,7 @@
+### Diagrama de Flujo de la Calculadora
 
-graph TD
+```mermaid
+[graph TD
     %% Inicio del programa
     Start([Inicio del Programa]) --> Welcome[/Bienvenido <br> Coloque lo que desea calcular/]
     Welcome --> Node2((2))
@@ -39,3 +41,6 @@ graph TD
     Choice -- Sí --> Node2
     Choice -- No --> EndMsg[/Fin/]
     EndMsg --> End([Fin del Programa])
+]
+
+  
