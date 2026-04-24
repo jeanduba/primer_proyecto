@@ -1,3 +1,5 @@
+'''mermaid
+
 graph TD
     Inicio([INICIO DEL PROGRAMA]) --> Bienvenida[/BIENVENIDO <br> COLOQUE LO QUE DESEA CALCULAR/]
     
