@@ -40,4 +40,4 @@ graph TD
     AskNext --> Choice{Otro cálculo}
     Choice -- Sí --> Node2
     Choice -- No --> EndMsg[/Fin/]
-    EndMsg --> End([Fin del Programa])
+    EndMsg --> End([Fin del Programa])’’’
