@@ -1,5 +1,5 @@
 print("○○ Bienvenido ○○")
-input ("Coloque lo que desea calcular-Enter para continuar")
+input ("Coloque lo que desea calcular-Enter para continuar.")
 
 
 numero = input ("Primer numero-")
