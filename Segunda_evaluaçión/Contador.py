@@ -1,24 +1,6 @@
 print("Bienvenido")
 
-lista = []
-
-contador = 0
-
-Mcontador = input ("Mostrar contador, si-no: ")
-
-
-while contador !=16:
-  if Mcontador == "si":
-   print (contador)
-  elif Mcontador == "no":
-   print ("continuar")
-   break
-  lista = lista + [contador]
-  contador += 1
-
-
-
-
+lista = [20, 23, 23, 21, 20, 22, 19, 19, 20, 21, 20, 23]
 
 
 while True:
@@ -53,7 +35,7 @@ while True:
      if lista:
       valormenor = lista [0]
       for numero in lista:
-          if numero < valormayor:
+          if numero < valormenor:
              valormenor = numero
       print (f"el valor menor es:", valormenor)
      else:
