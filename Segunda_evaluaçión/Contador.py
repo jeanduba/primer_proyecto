@@ -28,9 +28,7 @@ while True:
           if numero > valormayor:
              valormayor = numero
       print (f"el valor mayor es:", valormayor)
-     else:
-      print ("no hay numero mayor introucir valor")
-
+     
  if mostrarlista == "valor menor":
      if lista:
       valormenor = lista [0]
@@ -38,9 +36,8 @@ while True:
           if numero < valormenor:
              valormenor = numero
       print (f"el valor menor es:", valormenor)
-     else:
-      print ("no hay numero menor introducir valor")
-     
+
+
  if mostrarlista == "terminar":
   print("fin")
   break
