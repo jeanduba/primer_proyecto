@@ -1,82 +1,104 @@
-lista = []
+
+from flask import Flask, render_template, request, send_file
+import os
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/subir', methods=['POST'])
+def subir():
+
+ lista = []
 
    
-with open('lista_de_asistencia_programacion.txt', 'r') as file:
-    for line in file:
-        lista.append(line.strip())
+ with open('lista_de_asistencia_programacion.txt', 'r') as file:
+     for line in file:
+         lista.append(line.strip())
        
-n = len(lista)
+ n = len(lista)
 
-for i in range(n):
-    for j in range (0, n - i - 1):
-        if lista[j] > lista[j + 1]:
-            lista[j], lista[j + 1] = lista[j + 1], lista[j]
+ for i in range(n):
+     for j in range (0, n - i - 1):
+         if lista[j] > lista[j + 1]:
+             lista[j], lista[j + 1] = lista[j + 1], lista[j]
             
+ return render_template('pagina2.html', lista = lista)
 
 
-while True:
+@app.route('/buscar', methods=['POST'])
+def buscar():
+    nombre_buscar = request.form.get('buscar')
+    nuevo_nombre = request.form.get('modificar')
+    with open('lista_asistencia.txt', 'r', encoding='utf-8') as f:
+        lista = [line.strip() for line in f]
 
- print("bienvenidos")
-
- mostrarlis = input ("Utilizar el buscador=1--Mostrar lista=2--Cancelar=3--guardar pdf--4--")
 
 
- if mostrarlis == "1":
-     y = input("coloque el nombre,apellido o cedula del estudiante que desea buscar:")
-     for item in range(len(lista)):
-       if y in lista[item]:
-        print(f"El estudiante es-[{lista[item]}]")
-        modificar = input ("deasea modificar la informacion del estudiante=4/desea eliminar al estudieante por completo=5: ")
-        if modificar == "4":
-         cambio = input ("Coloque su modificación:  ")
-         lista[item] = cambio
-         print ("cambio hecho")
-         print (f"Se a cambio la información del estudiante a-[{lista[item]}]")
-         break
+
+
+ 
+    mostrarlis = input ("Utilizar el buscador=1--Mostrar lista=2--Cancelar=3--guardar pdf=4--")
+
+
+    if mostrarlis == "1":
+        y = input("coloque el nombre,apellido o cedula del estudiante que desea buscar:")
+        for item in range(len(lista)):
+          if y in lista[item]:
+           print(f"El estudiante es-[{lista[item]}]")
+           modificar = input ("deasea modificar la informacion del estudiante=4/desea eliminar al estudieante por completo=5/coloque cualquier letra para volver: ")
+           if modificar == "4":
+            cambio = input ("Coloque su modificación:  ")
+            lista[item] = cambio
+            print ("cambio hecho")
+            print (f"Se a cambio la información del estudiante a-[{lista[item]}]")
+            break
       
-        if modificar == "5":
-         lista.remove(lista[item])
-         break
-     conitnue = input("¿desea continuar? ")
-     if conitnue == "si":
-      print("ok")
-     if conitnue == "no":
-      print ("fin")
-      break
+          if modificar == "5":
+           lista.remove(lista[item])
+           break
+        conitnue = input("¿desea continuar? ")
+        if conitnue == "si":
+         print("ok")
+        if conitnue == "no":
+         print ("fin")
+         
       
  
      
- if mostrarlis == "2":
-    print(lista)
+    if mostrarlis == "2":
+     print(lista)
     
 
- from fpdf import FPDF  
+    from fpdf import FPDF  
 
 
- if mostrarlis == "4":
-    pdf = FPDF()
-    pdf.add_page()
-    pdf.set_font("Arial", "B", 16)
+    if mostrarlis == "4":
+      pdf = FPDF()
+      pdf.add_page()
+      pdf.set_font("Arial", "B", 16)
     
    
-    pdf.cell(40, 10, "Lista de Asistencia de progrmacion")
-    pdf.ln(10) 
+      pdf.cell(40, 10, "Lista de Asistencia de progrmacion")
+      pdf.ln(10) 
     
-    pdf.set_font("Arial", size=12)
+      pdf.set_font("Arial", size=12)
     
     
-    for i, estudiantes in enumerate(lista, 1):
+      for i, estudiantes in enumerate(lista, 1):
         pdf.cell(0, 10, f"{i}. {estudiantes}", ln=True)
     
    
-    nombre_pdf = "lista_asistencia.pdf"
-    pdf.output(nombre_pdf)
-    print(f" el pdf se ha guardado correctamente {nombre_pdf}")
+      nombre_pdf = "lista_asistencia.pdf"
+      pdf.output(nombre_pdf)
+      print(f" el pdf se ha guardado correctamente {nombre_pdf}")
 
 
 
- if mostrarlis == "3":
-  print ("fin")
-  break
+      if mostrarlis == "3":
+       print ("fin")
+       
 
  

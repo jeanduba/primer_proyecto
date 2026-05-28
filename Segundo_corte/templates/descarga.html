@@ -12,15 +12,16 @@
         <p>La Lista de Asistencia Modificada ha sido Procesada y Convertida a PDF.</p>
         <hr>
         <br><br>
-        <a href="{{ url_pdf }}" download="Lista_Asistencia_Modificada.pdf" >
-            ◇Descargar PDF◇
+        <a href="{{ url_for('descargar', nombre=url_pdf) }}">
+           Descargar PDF
+        </a>
         </a>
         <br><br><br>
-        <a href="index.html" style="color: #666; text-decoration: none;">◇Volver a Subir otro archivo◇</a>
+        <a href="{{ url_for('index') }}">Volver a Subir otro archivo</a>   
     </div>
-    <li><a href="index.html">◇SUBIR LA LISTA DE ASISTENCIA◇</a></li>
-    <li><a href="pagina2.html">◇BUSCAR Y MODIFICAR◇</a></li>
-    <li><a href="pagina3.html">◇VISUALIZACION FINAL◇</a></li>
+<a href="{{ url_for('index') }}">SUBIR LA LISTA DE ASISTENCIA</a>    
+<a href="{{ url_for('subir') }}">BUSCAR Y MODIFICAR</a>    
+<a href="{{ url_for('buscar') }}">◇VISUALIZACION FINAL◇</a>
 
 </body>
 </html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>□□ Previsualización de la Lista □□</title>
+</head>
+<body>
+    <h1>◇VISUALIZACION FINAL◇</h1>
+    <p>Revisa cómo quedó la lista antes de descargarla en PDF:</p>
+    <hr>
+  <form action="/generar-pdf" method="POST">
+    
+    <div style="border: 1px solid #ccc; padding: 20px; max-width: 600px; margin: auto;">
+        
+        <div style="text-align: center;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/7/77/Nuevo_Escudo_de_la_UNEFA_%28Desde_1999%29.svg" style="width: 100px;">
+        </div>
+
+        <h3>Previsualización:</h3>
+        
+        <div contenteditable="true" style="min-height: 300px; white-space: pre-wrap; border: 1px inset #eee; padding: 10px;">
+            {{ lista_modificada }}
+        </div>
+
+        <textarea name="texto_final" style="display: none;">{{ lista_modificada }}</textarea>
+        
+        <br>
+        <button type="submit" style="width: 100%; padding: 10px;">Continuar y Descargar PDF</button>
+
+    </div> </form>
+<a href="{{ url_for('index') }}">SUBIR LA LISTA DE ASISTENCIA</a>    
+<a href="{{ url_for('subir') }}">BUSCAR Y MODIFICAR</a>
+</body>
+</html>
