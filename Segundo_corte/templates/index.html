@@ -44,3 +44,17 @@
      
     </style>
 </head>
+<body>
+    <div class="contenedor">
+        <img src="LogoU.png" alt="templates">
+        <h2>Control de Asistencia</h2>
+        <p>Por favor, sube un archivo .txt con la lista de estudiantes.</p>
+        
+        <form action="/subir" method="POST" enctype="multipart/form-data">
+            <input type="file" name="archivo" accept=".txt" required>
+            <button type="submit"> ◇Cargar Lista</button>
+        </form>
+    </div>
+
+</body>
+</html>
