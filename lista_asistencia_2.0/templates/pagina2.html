@@ -11,15 +11,57 @@
             align-items: flex-start; 
             margin-bottom: 30px;
             padding: 15px;
-            border: 1px solid #ddd;
+            border-top: 3px solid #002244;
             background-color: #f9f9f9;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
-        .buscadores input { padding: 5px; margin-bottom: 5px; width: 200px; }
-        .buscadores button { padding: 5px 10px; cursor: pointer; }
         
-        .tabla-asistencia { width: 100%; border-collapse: collapse; }
-        .tabla-asistencia th, .tabla-asistencia td { border: 1px solid #ccc; padding: 10px; text-align: left; }
-        .tabla-asistencia th { background-color: #f2f2f2; color: #2c5d8a; }
+        
+        .buscadores h2 {
+            color: #002244;
+            font-size: 22px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+       .banner-azul {
+    background-color: #00417A; 
+    display: flex;
+    align-items: center; 
+    padding: 50px;
+    border-radius: 5px;
+    margin-bottom: 30px;
+}
+       .texto-banner {
+    color: #8F9FFF; 
+    font-size: 40px;
+    margin: 0;
+}
+       
+       
+        .buscadores input { 
+        padding: 5px; 
+        margin-bottom: 5px; 
+        width: 200px; 
+        }
+        .buscadores button { 
+        padding: 5px 10px; 
+        cursor: pointer; 
+        }
+        
+        .tabla-asistencia { 
+        width: 100%; 
+        border-collapse: collapse; 
+        }
+       .tabla-asistencia th, .tabla-asistencia td { 
+       border: 1px solid #ccc; 
+       padding: 10px; 
+       text-align: left; 
+       }
+        .tabla-asistencia th { 
+        background-color: #002244; 
+        color: #ffffff; 
+        }
         
         .check-verde { color: green; font-weight: bold; }
         .btn-x { color: white; background-color: red; padding: 2px 8px; text-decoration: none; border-radius: 3px; font-weight: bold; }
@@ -28,20 +70,32 @@
 
         .caja-edicion {
             background-color: #e8f4fd; 
-            padding: 15px; 
+            padding: 25px; 
             border: 1px solid #b6d4fe; 
             border-radius: 5px;
             margin-top: 15px;
         }
 
-        /* Clase para resaltar estudiantes con muchas faltas */
+      /* para exponer estudiantes que han faltado mucho */
         .alerta-faltas {
             color: red !important;
             font-weight: bold;
         }
+        
+    .imagen-banner {
+    width: 90px;
+    height: auto;
+    margin-right: 50px;
+}
     </style>
 </head>
 <body>
+    
+<div class="banner-azul">
+    <img src="logoU.png" alt="templates" class="imagen-banner">
+    <h1 class="texto-banner"> ◇ CONTROL DE ASISTENCIA ◇ </h1>
+</div>
+
 
     <div class="seccion-controles">
         <div class="buscadores">
@@ -49,12 +103,12 @@
             <form action="/buscar" method="POST">
                 <div>
                     <input type="text" name="buscar_nombre" placeholder="Nombre del estudiante...">
-                    <button type="submit" name="tipo_busqueda" value="nombre">Buscar nombre</button>
+                    <button type="submit" name="tipo_busqueda" value="nombre" style="background-color: #00417A; color: white">Buscar nombre</button>
                 </div>
                 
                 <div>
                     <input type="text" name="buscar_cedula" placeholder="V-00.000.000">
-                    <button type="submit" name="tipo_busqueda" value="cedula">Buscar cédula</button>
+                    <button type="submit" name="tipo_busqueda" value="cedula" style="background-color: #00417A; color: white">Buscar cédula</button>
                 </div>
 
                 {% if encontrado %}
@@ -64,7 +118,7 @@
                     <input type="hidden" name="cedula_a_editar" value="{{ encontrado.cedula }}">
                     <input type="text" name="reemplazar" placeholder="Escriba el nombre corregido aquí" required style="width: 250px;">
                     <button type="submit" name="tipo_busqueda" value="modificar" 
-                            style="background-color: #198754; color: white; border: none; padding: 7px 12px; cursor: pointer; border-radius: 3px; font-weight: bold;">
+                            style="background-color: #00417A; color: white; border: none; padding: 7px 12px; cursor: pointer; border-radius: 3px; font-weight: bold;">
                         Confirmar Modificación
                     </button>
                 </div>
@@ -73,7 +127,7 @@
         </div>
 
         <form action="/set_default" method="POST">
-            <button type="submit" class="btn-default">Establecer como lista predeterminada</button>
+            <button type="submit" class="btn-default"> ◇ Establecer como lista predeterminada</button>
         </form>
     </div>
 
@@ -105,7 +159,7 @@
     </table>
 
     <br>
-    <a href="{{ url_for('index') }}" style="text-decoration: none; color: #2c5d8a;">← Volver a subir otra lista</a>
+    <a href="{{ url_for('index') }}" style="text-decoration: none; color: #2c5d8a;"> ◇Volver a subir otra lista</a>
 
 </body>
 </html>
