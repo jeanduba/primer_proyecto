@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>◇ Subir Lista de Asistencia ◇</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #000080;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .contenedor {
+            background-color: white;
+            padding: 40px; /* Ajustado de 100px para que no sea gigante */
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+        }
+        /* Estilo para que el logo no se rompa si no carga */
+        img {
+            max-width: 150px;
+            margin-bottom: 20px;
+        }
+        input[type="file"] {
+            margin: 25px 0;
+            padding: 10px;
+            border: 1px dashed #000080;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        button {
+            background-color: #0000cd; /* Azul medio */
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #000080;
+            transform: scale(1.05);
+        }
+        p {
+            color: #555;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor">
+        <img src="{{ url_for('static', filename='LogoU.png') }}" alt="Logo UNEFA">
+        
+        <h2>Control de Asistencia</h2>
+        <p>Sube el archivo <b>.txt</b> de hoy para procesar las faltas automáticamente respecto a la lista base.</p>
+        
+        <form action="/seleccionar" method="POST" enctype="multipart/form-data">
+            <input type="file" name="archivo" accept=".txt" required>
+            <button type="submit"> ◇ Cargar Lista y Procesar</button>
+        </form>
+    </div>
+</body>
+</html>

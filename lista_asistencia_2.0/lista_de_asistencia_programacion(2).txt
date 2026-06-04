@@ -1,0 +1,20 @@
+V-32.473.394,Adrian Méndez,0
+V-30.761.214,Anthuan Pérez,0
+V-16.203.456,Beatriz Riuva,0
+V-31.201.537,Daniel Bravo,0
+V-31.636.997,Deiker Gonzales,0
+V-29.686.595,Diego Luna,0
+V-31.408.249,Emmanuel Rivera,0
+V-31.078.207,Franyelis Delgado,0
+V-31.090.471,Isaac Aponte,0
+V-30.725.674,Jesús Durán,0
+V-31.878.155,José Liendo,0
+V-29.756.688,Laura Gamacho,0
+V-31.905.045,Madison Aguilar,0
+V-32.104.973,Maikel Espinoza,0
+V-32.111.381,Maria Ochoa,0
+V-28.312.874,Mauricio Martínez,0
+V-28.781.998,Meyker Guarpaca,0
+V-31.117.639,Navi Mañoz,0
+V-29.922.184,Ramses Acuña,0
+
