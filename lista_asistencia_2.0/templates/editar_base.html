@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Lista Predeterminada - UNEFA</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background-color: #f9f9f9; }
+        
+        .banner-azul {
+            background-color: #00417A; 
+            display: flex;
+            align-items: center; 
+            padding: 30px 50px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        .texto-banner { color: #8F9FFF; font-size: 30px; margin: 0; }
+        .logo-unefa { width: 70px; height: auto; margin-right: 30px; }
+
+        .contenedor { max-width: 900px; margin: 0 auto; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        
+        h2 { color: #002244; border-bottom: 2px solid #00417A; padding-bottom: 10px; }
+        
+        /* Formulario para Agregar Alumno */
+        .form-agregar { display: flex; gap: 10px; margin-bottom: 25px; background: #e8f4fd; padding: 15px; border-radius: 5px; border: 1px solid #b6d4fe; }
+        .form-agregar input { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        .btn-agregar { background-color: #198754; color: white; border: none; padding: 8px 15px; cursor: pointer; font-weight: bold; border-radius: 4px; }
+
+        /* Tabla de Edición */
+        .tabla-edicion { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .tabla-edicion th, .tabla-edicion td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+        .tabla-edicion th { background-color: #002244; color: white; }
+        
+        .btn-eliminar { color: white; background-color: #dc3545; padding: 5px 10px; text-decoration: none; border-radius: 3px; font-weight: bold; font-size: 13px; }
+        .btn-eliminar:hover { background-color: #bd2130; }
+        
+        .btn-volver { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #00417A; font-weight: bold; }
+        .btn-volver:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <div class="contenedor">
+        <div class="banner-azul">
+            <img src="{{ url_for('static', filename='LogoU.png') }}" alt="logo UNEFA" class="logo-unefa">
+            <h1 class="texto-banner">◇ MODIFICAR BASE DETERMINADA ◇</h1>
+        </div>
+
+        <a href="{{ url_for('seleccionar') }}" class="btn-volver">← Volver a la Lista de Asistencia</a>
+        
+        <h2>Añadir Nuevo Estudiante a la Base</h2>
+        <form action="/editar_base/agregar" method="POST" class="form-agregar">
+            <input type="text" name="cedula" placeholder="Cédula (Ej: V-25.123.456)" required style="width: 25%;">
+            <input type="text" name="nombre" placeholder="Nombre y Apellido del alumno" required style="width: 55%;">
+            <button type="submit" class="btn-agregar">+ Agregar Alumno</button>
+        </form>
+
+        <h2>Estudiantes Registrados Actuales</h2>
+        <table class="tabla-edicion">
+            <thead>
+                <tr>
+                    <th>Cédula</th>
+                    <th>Nombre y Apellido</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cedula, datos in lista.items() %}
+                <tr>
+                    <td><strong>{{ cedula }}</strong></td>
+                    <td>{{ datos[0] }}</td>
+                    <td>
+                        <a href="/editar_base/eliminar/{{ cedula }}" class="btn-eliminar" onclick="return confirm('¿Seguro que deseas eliminar a este estudiante de la lista base?');">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

@@ -17,4 +17,4 @@ V-28.312.874,Mauricio Martínez,0
 V-28.781.998,Meyker Guarpaca,0
 V-31.117.639,Navi Mañoz,0
 V-29.922.184,Ramses Acuña,0
-V-31.793.692,Yeiderlhing Palna,0
+V-31.793.692,Yeiderlhing Palna,2

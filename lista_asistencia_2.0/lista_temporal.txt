@@ -7,7 +7,7 @@ V-29.686.595,Diego Luna,0
 V-31.408.249,Emmanuel Rivera,0
 V-31.078.207,Franyelis Delgado,0
 V-31.090.471,Isaac Aponte,0
-V-30.725.674,Jesús Durán,0
+V-30.725.674,Jesus peres ,0
 V-31.878.155,José Liendo,0
 V-29.756.688,Laura Gamacho,0
 V-31.905.045,Madison Aguilar,0
@@ -17,3 +17,4 @@ V-28.312.874,Mauricio Martínez,0
 V-28.781.998,Meyker Guarpaca,0
 V-31.117.639,Navi Mañoz,0
 V-29.922.184,Ramses Acuña,0
+V-31.793.692,Yeiderlhing Palna,2
