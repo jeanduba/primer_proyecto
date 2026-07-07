@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingresar 1</title>
+    <style>
+         body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .panel-roles {
+            background-color: #ffffff;
+            padding: 40px 50px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+        .panel-roles h2 {
+            color: #333333;
+            margin-bottom: 30px;
+            font-size: 22px;
+        }
+        .contenedor-botones {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+        .btn-rol {
+            background-color: #002244;
+            color: #ffffff;
+            border: none;
+            padding: 50px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            min-width: 140px;
+        }
+
+        .btn-rol:hover {
+            background-color: #004494;
+        }
+
+        .oculto {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+<div class="panel-roles">
+    <h2>INGRESAR COMO:</h2>
+
+    <div class="contenedor-botones">
+        {% if 'coordinador' in roles %}
+            <a href="/cordinador" class="btn-rol" id="btn-coordinador" style="text-decoration: none";>Coordinador</a>
+        {% endif %}
+
+        {% if 'profesor' in roles %}
+            <a href="/profesor" class="btn-rol" id="btn-profesor" style="text-decoration: none";>Profesor</a>
+        {% endif %}
+
+        {% if 'estudiante' in roles %}
+            <a href="/horario" class="btn-rol" id="btn-estudiante" style="text-decoration: none";>Estudiante</a>
+        {% endif %}
+    </div>
+</div>

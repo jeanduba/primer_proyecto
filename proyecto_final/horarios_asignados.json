@@ -1,0 +1,26 @@
+[
+    {
+        "profesor": "Cesar Milan",
+        "dia": "Lunes",
+        "hora": "07:00 - 07:45",
+        "materia": "programacion 2",
+        "seccion": "04S-2610-D1",
+        "aula": "cc"
+    },
+    {
+        "profesor": "Cesar Milan",
+        "dia": "Lunes",
+        "hora": "07:45 - 08:30",
+        "materia": "programacion 2",
+        "seccion": "04S-2610-D1",
+        "aula": "Aula 5"
+    },
+    {
+        "profesor": "Cesar Milan",
+        "dia": "Miércoles",
+        "hora": "07:00 - 07:45",
+        "materia": "programacion 2",
+        "seccion": "04S-2610-D1",
+        "aula": "Aula 5"
+    }
+]

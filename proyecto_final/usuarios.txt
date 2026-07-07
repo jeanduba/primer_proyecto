@@ -1,0 +1,4 @@
+persona1,hola2005,coordinador-estudiante 
+persona2,hola2006,profesor-estudiante
+persona3,hola2007,estudiante
+persona4,hola2008,coordinador-profesor-estudiante

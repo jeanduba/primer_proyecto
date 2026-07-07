@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SICEU - Disponibilidad Docente</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f9;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    .barra-superior {
+      background-color: #002244; 
+      color: white;
+      padding: 20px;
+      text-align: center;
+      border-bottom: 4px solid #f1c40f; 
+      position: relative;
+    }
+
+    .titulo {
+      margin: 0;
+      font-size: 26px;
+      letter-spacing: 1px;
+    }
+
+    .subtitulo {
+      margin: 5px 0 0 0;
+      font-size: 14px;
+      color: #cbd5e1;
+    }
+
+    /* CONTENEDOR BOTÓN VOLVER ENLACE DIRECTO */
+    .contenedor-navegacion {
+      position: absolute;
+      top: 22px;
+      left: 20px;
+    }
+
+    .btn-volver {
+      background-color: #f1c40f;
+      color: #002244;
+      border: none;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s ease;
+    }
+
+    .btn-volver:hover {
+      background-color: #d4ac0d;
+    }
+
+    .area-principal {
+      padding: 20px;
+      max-width: 1400px; 
+      margin: 0 auto;
+    }
+
+    .tarjeta-instrucciones {
+      background-color: white;
+      padding: 15px 20px;
+      border-left: 5px solid #002244;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .tarjeta-instrucciones h2 {
+      margin: 0 0 5px 0;
+      font-size: 18px;
+      color: #002244;
+    }
+
+    .seccion-profesor {
+      background-color: white;
+      padding: 20px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      border: 1px solid #cbd5e1;
+    }
+
+    .seccion-profesor label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #002244;
+    }
+
+    .seccion-profesor input {
+      width: 100%;
+      max-width: 400px;
+      padding: 10px;
+      font-size: 14px;
+      border: 2px solid #cbd5e1;
+      border-radius: 4px;
+      outline: none;
+    }
+
+    .seccion-profesor input:focus {
+      border-color: #002244;
+    }
+
+    .contenedor-tabla {
+      overflow-x: auto; 
+      margin-bottom: 25px;
+    }
+
+    .tabla-disponibilidad {
+      border-collapse: collapse;
+      width: 100%;
+      background-color: white;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .tabla-disponibilidad th, .tabla-disponibilidad td {
+      border: 3px solid black;
+      padding: 12px 8px;
+      text-align: center;
+      font-size: 13px;
+      user-select: none;
+    }
+
+    .tabla-disponibilidad th {
+      background-color: #002244;
+      color: white;
+    }
+
+    .columna-hora {
+      background-color: #f8fafc;
+      font-weight: bold;
+      color: #002244;
+      width: 130px;
+    }
+
+    .tabla-disponibilidad td:not(.columna-hora) {
+      cursor: pointer;
+      background-color: white;
+      transition: all 0.15s ease;
+    }
+
+    .tabla-disponibilidad td.activo {
+      background-color: #d1fae5 !important;
+      color: #065f46 !important;
+      border: 3px solid #10b981;
+      font-weight: bold;
+    }
+
+    .seccion-acciones {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .btn-guardar-horario {
+      background-color: #002244;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      font-size: 15px;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .alert-success {
+      background-color: #d1fae5;
+      color: #065f46;
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 4px;
+      border: 1px solid #10b981;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="barra-superior">
+    <div class="contenedor-navegacion">
+      <a href="/roles" class="btn-volver">← Volver al Panel</a>
+    </div>
+    <h1 class="titulo">REGISTRO DE DISPONIBILIDAD</h1>
+    <p class="subtitulo">Panel del profesor - Período Académico Actual</p>
+  </header>
+
+  <main class="area-principal">
+    
+    {% if mensaje %}
+      <div class="alert-success">{{ mensaje }}</div>
+    {% endif %}
+
+    <section class="tarjeta-instrucciones">
+      <h2>Bienvenido Profesor</h2>
+      <p>Ingrese su nombre, presione Enter para fijarlo y seleccione los bloques de horas en los que tiene disponible.</p>
+    </section>
+
+    <form id="formularioDisponibilidad" method="POST" action="/profesor">
+      
+      <div class="seccion-profesor">
+        <label for="nombre_docente">Nombre Completo del Docente:</label>
+        <input type="text" id="nombre_docente" name="nombre" 
+               value="{{ nombre_docente if nombre_docente else '' }}" 
+               placeholder="Ingrese su nombre y presione Enter" required>
+        
+        <h3 id="vista_nombre_docente" style="color: #002244; margin: 15px 0 0 0; display: none;"></h3>
+      </div>
+      
+      <div id="contenedorInputsOcultos"></div>
+
+      <div class="contenedor-tabla">
+        <table class="tabla-disponibilidad">
+          <thead>   
+            <tr>
+              <th>Entrada / Salida</th>
+              <th>Lunes</th>
+              <th>Martes</th>
+              <th>Miércoles</th>
+              <th>Jueves</th>
+              <th>Viernes</th>
+              <th>Sábado</th>
+              <th>Domingo</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% set horas = [
+              "07:00 - 07:45", "07:45 - 08:30", "08:30 - 09:15", "09:15 - 10:00",
+              "10:00 - 10:45", "10:45 - 11:30", "11:30 - 12:15", "12:15 - 13:00",
+              "13:00 - 13:45", "13:45 - 14:30", "14:30 - 15:15", "15:15 - 16:00",
+              "16:00 - 16:45", "16:45 - 17:30", "17:30 - 18:15"
+            ] %}
+            {% set dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"] %}
+
+            {% for hora in horas %}
+              <tr>
+                <td class="columna-hora">{{ hora }}</td>
+                {% for dia in dias %}
+                  {% set clave_bloque = dia ~ "|" ~ hora %}
+                  {% if bloques_guardados and clave_bloque in bloques_guardados %}
+                    <td class="activo">Disponible</td>
+                  {% else %}
+                    <td></td>
+                  {% endif %}
+                {% endfor %}
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="seccion-acciones">
+        <button type="submit" class="btn-guardar-horario">Guardar Disponibilidad</button>
+      </div>
+
+    </form>
+  </main>
+
+  <script>
+    const tabla = document.querySelector('.tabla-disponibilidad');
+    const contenedorInputs = document.getElementById('contenedorInputsOcultos');
+    const inputNombre = document.getElementById('nombre_docente');
+    const vistaNombre = document.getElementById('vista_nombre_docente');
+
+    document.addEventListener("DOMContentLoaded", () => {
+        actualizarInputsOcultos();
+        if (inputNombre.value.trim() !== "") {
+          vistaNombre.innerText = "Docente: " + inputNombre.value.trim();
+          vistaNombre.style.display = "block";
+        }
+    });
+
+    inputNombre.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault(); 
+        const valorNombre = this.value.trim();
+        if (valorNombre !== "") {
+          vistaNombre.innerText = "Docente: " + valorNombre;
+          vistaNombre.style.display = "block";
+        } else {
+          vistaNombre.style.display = "none";
+        }
+      }
+    });
+
+    tabla.addEventListener('click', (e) => {
+      const celda = e.target.closest('td');
+      if (celda && !celda.classList.contains('columna-hora')) {
+        celda.classList.toggle('activo');
+        if(celda.classList.contains('activo')) {
+          celda.innerText = "Disponible";
+        } else {
+          celda.innerText = "";
+        }
+        actualizarInputsOcultos();
+      }
+    });
+
+    function actualizarInputsOcultos() {
+      contenedorInputs.innerHTML = "";
+      const celdasActivas = tabla.querySelectorAll('td.activo');
+
+      celdasActivas.forEach(celda => {
+        const fila = celda.closest('tr');
+        const horaTexto = fila.querySelector('.columna-hora').innerText.trim();
+        const indiceColumna = celda.cellIndex;
+        const diaTexto = tabla.querySelectorAll('thead th')[indiceColumna].innerText.trim();
+
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'bloques_disponibles'; 
+        input.value = `${diaTexto}|${horaTexto}`;
+        contenedorInputs.appendChild(input);
+      });
+    }
+  </script>
+</body>
+</html>

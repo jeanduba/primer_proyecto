@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Horario SICEU - Estudiantes</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background-color: #f4f6f9;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .encabezado-contenedor {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1300px;
+      margin: 0 auto 20px auto;
+      border-bottom: 3px solid #f1c40f;
+      padding-bottom: 10px;
+      gap: 15px;
+    }
+
+    .titulo-seccion {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    h1 { margin: 0; color: #002244; font-size: 24px; }
+
+    .btn-volver {
+      background-color: #64748b;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .btn-volver:hover { background-color: #475569; }
+
+    .btn-cargar {
+      background-color: #002244;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn-cargar:hover:not(:disabled) { background-color: #10b981; }
+
+    /* BOTÓN PARA EL PDF */
+    .btn-pdf {
+      background-color: #dc2626;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      transition: background-color 0.2s;
+    }
+    .btn-pdf:hover:not(:disabled) { background-color: #b91c1c; }
+    .btn-pdf:disabled { background-color: #cbd5e1; cursor: not-allowed; color: #64748b; }
+
+    #contenedor-oferta {
+      display: none;
+      max-width: 1300px;
+      margin: 0 auto 25px auto;
+      background: white;
+      padding: 15px;
+      border-radius: 6px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    .tabla-oferta { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    .tabla-oferta th, .tabla-oferta td { border: 1px solid #cbd5e1; padding: 10px; text-align: center; font-size: 13px; }
+    .tabla-oferta th { background-color: #f1f5f9; color: #334155; }
+
+    .btn-agregar {
+      background-color: #38bdf8; color: #0369a1; border: none;
+      padding: 6px 12px; border-radius: 4px; font-weight: bold; cursor: pointer;
+    }
+
+    .contenedor-horario-real {
+      max-width: 1300px; margin: 0 auto; background: white;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-radius: 4px;
+    }
+
+    .mi-tabla { border-collapse: collapse; width: 100%; }
+    .mi-tabla th, .mi-tabla td { border: 2px solid #000000; padding: 6px; text-align: center; width: 12.5%; height: 65px; }
+    .mi-tabla th { background-color: #002244; color: white; }
+    .columna-hora { background-color: #f8fafc; font-weight: bold; color: #002244; }
+
+    .bloque-inscrito {
+      background-color: #0284c7; color: white; border-radius: 4px;
+      padding: 6px; font-size: 11px; cursor: pointer;
+    }
+    .bloque-inscrito.bloqueado { cursor: default; }
+    .bloque-inscrito:hover:not(.bloqueado) { background-color: #ef4444; }
+
+    .contenedor-guardar { max-width: 1300px; margin: 25px auto; text-align: right; }
+    .btn-finalizar {
+      background-color: #10b981; color: white; border: none; padding: 12px 30px;
+      font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .btn-finalizar:hover:not(:disabled) { background-color: #059669; }
+    .btn-finalizar:disabled, .btn-cargar:disabled { background-color: #94a3b8; cursor: not-allowed; }
+    
+    .estado-bloqueo {
+      background-color: #fee2e2; color: #991b1b; padding: 12px;
+      border-radius: 4px; font-weight: bold; text-align: center; margin-bottom: 15px; display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="encabezado-contenedor">
+    <div class="titulo-seccion">
+      <a href="/roles" class="btn-volver">← Volver a Panel</a>
+      <h1>HORARIO DE CLASES — Estudiante: {{ estudiante }}</h1>
+    </div>
+    <div style="display: flex; gap: 10px;">
+      <button id="btnDescargarPDF" class="btn-pdf" onclick="descargarPDF()" disabled>📄 Descargar PDF</button>
+      <button id="btnCargar" class="btn-cargar" onclick="mostrarMiniTablaOferta()">Cargar horario</button>
+    </div>
+  </div>
+
+  <div id="msgBloqueo" class="estado-bloqueo">🔒 TU HORARIO SE ENCUENTRA INSCRITO Y CONSOLIDADO DE FORMA DEFINITIVA. NO SE PERMITEN CAMBIOS.</div>
+
+  <div id="contenedor-oferta">
+    <h3>Materias Ofertadas por Coordinación (Agrupadas por horas totales)</h3>
+    <table class="tabla-oferta">
+      <thead>
+        <tr>
+          <th>Asignatura</th>
+          <th>Sección</th>
+          <th>Aula</th>
+          <th>Profesor</th>
+          <th>Horarios Asignados</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody id="cuerpo-oferta"></tbody>
+    </table>
+  </div>
+  
+  <div class="contenedor-horario-real">
+    <table class="mi-tabla" id="tabla-estudiante">
+      <thead>  
+        <tr>
+          <th> Entrada / Salida </th>
+          <th>Lunes</th><th>Martes</th><th>Miércoles</th><th>Jueves</th><th>Viernes</th><th>Sábado</th><th>Domingo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="columna-hora">07:00 - 07:45</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td class="columna-hora">07:45 - 08:30</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td class="columna-hora">08:30 - 09:15</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td class="columna-hora">09:15 - 10:00</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td class="columna-hora">10:00 - 10:45</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td class="columna-hora">10:45 - 11:30</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td class="columna-hora">11:30 - 12:15</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td class="columna-hora">12:15 - 13:00</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td class="columna-hora">13:00 - 13:45</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td class="columna-hora">13:45 - 14:30</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td class="columna-hora">14:30 - 15:15</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td class="columna-hora">15:15 - 16:00</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="contenedor-guardar">
+    <button id="btnFinalizar" class="btn-finalizar" onclick="guardarHorarioDefinitivo()">Inscribir Horario definitivo</button>
+  </div>
+
+  <script>
+    let listaAsignaciones = [];
+    let materiasSeleccionadas = [];
+    let horarioBloqueado = false;
+
+    document.addEventListener("DOMContentLoaded", () => {
+      fetch('/api/obtener_horario_estudiante')
+        .then(res => res.json())
+        .then(data => {
+          if (data.bloqueado) {
+            horarioBloqueado = true;
+            document.getElementById('msgBloqueo').style.display = 'block';
+            document.getElementById('btnCargar').disabled = true;
+            document.getElementById('btnFinalizar').disabled = true;
+            document.getElementById('btnDescargarPDF').disabled = false; // Habilitar si ya está consolidado
+            
+            data.materias.forEach(item => {
+              item.bloques.forEach(b => pintarBloqueEnCelda(item, b, true));
+            });
+          }
+        });
+    });
+
+    function mostrarMiniTablaOferta() {
+      if(horarioBloqueado) return;
+      document.getElementById('contenedor-oferta').style.display = 'block';
+
+      fetch('/api/asignaciones')
+        .then(res => res.json())
+        .then(data => {
+          listaAsignaciones = data.asignaciones;
+          const cuerpo = document.getElementById('cuerpo-oferta');
+          cuerpo.innerHTML = "";
+
+          listaAsignaciones.forEach((asig, index) => {
+            let textoBloques = asig.bloques.map(b => `${b.dia} (${b.hora})`).join(' || ');
+            const fila = document.createElement('tr');
+            fila.innerHTML = `
+              <td><strong>${asig.materia}</strong></td>
+              <td>${asig.seccion}</td>
+              <td>${asig.aula || 'N/A'}</td>
+              <td>${asig.profesor}</td>
+              <td style="color:#0284c7; font-size:11px;">${textoBloques}</td>
+              <td><button class="btn-agregar" onclick="incluirMateriaMúltiple(${index})">Agregar Todo</button></td>
+            `;
+            cuerpo.appendChild(fila);
+          });
+        });
+    }
+
+    function incluirMateriaMúltiple(index) {
+      if(horarioBloqueado) return;
+      const item = listaAsignaciones[index];
+
+      if(materiasSeleccionadas.some(m => m.materia === item.materia && m.seccion === item.seccion)) {
+        alert("Esta asignatura ya está agregada al horario.");
+        return;
+      }
+
+      materiasSeleccionadas.push(item);
+      item.bloques.forEach(b => pintarBloqueEnCelda(item, b, false));
+      document.getElementById('btnDescargarPDF').disabled = false; // Habilitar al tener al menos una materia
+    }
+
+    function pintarBloqueEnCelda(item, Guide, esEstatico) {
+      const tabla = document.getElementById('tabla-estudiante');
+      const cabeceras = tabla.querySelectorAll('thead th');
+      const filas = tabla.querySelectorAll('tbody tr');
+
+      let colIndex = -1;
+      cabeceras.forEach((th, idx) => {
+        if(th.innerText.trim().toLowerCase() === Guide.dia.trim().toLowerCase()) colIndex = idx;
+      });
+
+      if(colIndex !== -1) {
+        filas.forEach(fila => {
+          const horaTexto = fila.querySelector('.columna-hora').innerText.trim();
+          if(horaTexto === Guide.hora.trim()) {
+            const celdaDestino = fila.cells[colIndex];
+            celdaDestino.innerHTML = `
+              <div class="bloque-inscrito ${esEstatico ? 'bloqueado' : ''}" 
+                   onclick="removerMateriaCompleta('${item.materia}', '${item.seccion}', ${esEstatico})">
+                <strong>${item.materia}</strong>
+                <span>${item.seccion}</span><br>
+                <small>Aula: ${item.aula || 'S/A'}</small>
+              </div>
+            `;
+          }
+        });
+      }
+    }
+
+    function removerMateriaCompleta(materia, seccion, esEstatico) {
+      if(esEstatico || horarioBloqueado) return;
+      
+      const itemMateria = materiasSeleccionadas.find(m => m.materia === materia && m.seccion === seccion);
+      if(!itemMateria) return;
+
+      const tabla = document.getElementById('tabla-estudiante');
+      const cabeceras = tabla.querySelectorAll('thead th');
+      const filas = tabla.querySelectorAll('tbody tr');
+
+      itemMateria.bloques.forEach(Guide => {
+        let colIndex = -1;
+        cabeceras.forEach((th, idx) => {
+          if(th.innerText.trim().toLowerCase() === Guide.dia.trim().toLowerCase()) colIndex = idx;
+        });
+
+        if(colIndex !== -1) {
+          filas.forEach(fila => {
+            const horaTexto = fila.querySelector('.columna-hora').innerText.trim();
+            if(horaTexto === Guide.hora.trim()) {
+              fila.cells[colIndex].innerHTML = "";
+            }
+          });
+        }
+      });
+
+      materiasSeleccionadas = materiasSeleccionadas.filter(m => !(m.materia === materia && m.seccion === seccion));
+      if(materiasSeleccionadas.length === 0) {
+        document.getElementById('btnDescargarPDF').disabled = true;
+      }
+    }
+
+    function guardarHorarioDefinitivo() {
+      if(materiasSeleccionadas.length === 0) {
+        alert("Debes seleccionar al menos una materia antes de guardar.");
+        return;
+      }
+
+      if(!confirm("¿Estás seguro? Una vez guardado el horario no podrás realizar modificaciones ni elegir nuevas materias.")) return;
+
+      fetch('/api/guardar_horario_estudiante', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ materias: materiasSeleccionadas })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if(data.success) {
+          alert(data.message);
+          location.reload();
+        } else {
+          alert(data.message);
+        }
+      });
+    }
+
+    // FUNCIÓN DE REDIRECCIÓN AL CONTROLADOR DE DESCARGA PDF
+    function descargarPDF() {
+      window.location.href = '/descargar_pdf';
+    }
+  </script>
+</body>
+</html>

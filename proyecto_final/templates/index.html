@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login SICEU</title>
+  <style>
+	  body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #002244;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .contenedor {
+            background-color: white;
+            padding: 40px; /* Ajustado de 100px para que no sea gigante */
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+        }
+        button {
+            background-color: #0000cd; /* Azul medio */
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #000000;
+            transform: scale(1.05);
+        }
+        </style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='inicio.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+<div class="contenedor">
+	<h1>BIENVENIDO</h1>
+	<H2> Ingresar su usuario y contraseña</H2>
+  <form action="/login" method="POST">
+    <input type="text" name="usuario" placeholder="Usuario" required>
+    <input type="password" name="contraseña" minlength="8" placeholder="********" required>
+    <button type="submit">Entrar</button>
+  </form>
+</div>
+</body>
+</html>
