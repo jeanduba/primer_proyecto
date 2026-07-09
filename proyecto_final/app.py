@@ -6,7 +6,7 @@ from fpdf import FPDF
 import io
 
 app = Flask(__name__)
-app.secret_key = 'clave_secreta_unefa_siceu'  # Necesaria para usar session
+app.secret_key = 'clave_secreta_unefa_siceu'
 
 FICHERO_HORARIOS = 'horarios_asignados.json'
 FICHERO_INSCRIPCIONES = 'inscripciones_estudiantes.json'
@@ -43,7 +43,6 @@ def guardar_inscripciones(datos):
 
 cargar_horarios_desde_archivo()
 
-# Cargar base de datos de usuarios
 if os.path.exists('usuarios.txt'):
     with open('usuarios.txt', 'r', encoding='utf-8') as f:
         for line in f:
@@ -55,13 +54,9 @@ if os.path.exists('usuarios.txt'):
                     rol = parts[2]
                     CARGA_USUARIO[usuario] = {"password": contraseña, "rol": rol}
 
-# --- CLASE FPDF CON EL DISEÑO FIEL A LA IMAGEN ---
 class PDFHorario(FPDF):
     def header(self):
-        # NOTA: Si posees el logo oficial 'unefa_logo.png' en tu raíz, puedes descomentar la siguiente línea:
-        # self.image('unefa_logo.png', 12, 12, 20)
         
-        # Bloque Derecho: Núcleo y Período Académico
         self.set_font('Arial', 'B', 9)
         self.set_xy(150, 12)
         self.cell(45, 4, u'NÚCLEO', align='R', ln=1)
@@ -70,16 +65,14 @@ class PDFHorario(FPDF):
         self.set_x(150)
         self.set_font('Arial', 'B', 10)
         self.cell(45, 5, u'1-2026', align='R', ln=1)
-        
-        # Título Principal centrado / desplazado a la derecha del logo ficticio
         self.set_xy(35, 15)
         self.set_font('Arial', 'B', 22)
-        self.set_text_color(0, 51, 153) # Azul institucional UNEFA
+        self.set_text_color(0, 51, 153)
         self.cell(110, 8, u'COMPROBANTE', align='L', ln=1)
         self.set_x(35)
         self.cell(110, 8, u'DE INSCRIPCIÓN', align='L', ln=1)
         
-        # Restaurar color de texto por defecto
+        
         self.set_text_color(0, 0, 0)
         self.ln(15)
 
@@ -99,7 +92,12 @@ def login():
             roles_lista = datos_usuario["rol"].split('-')
             return render_template('roles.html', persona=usuario_ingresado, roles=roles_lista)
     return "<h3>Acceso denegado. Datos incorrectos.</h3><br><a href='/'>Volver a intentar</a>"
-
+    
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('inicio'))
+    
 @app.route('/cordinador', methods=['GET', 'POST'])
 def cordinador():
     global asignaciones_coordinador
@@ -137,7 +135,6 @@ def horarios():
         return redirect(url_for('inicio'))
     return render_template('horario.html', estudiante=session['usuario'])
 
-# --- GENERACIÓN DE PDF COMPATIBLE CON LA IMAGEN ---
 @app.route('/descargar_pdf', methods=['GET'])
 def descargar_pdf():
     if 'usuario' not in session:
@@ -155,7 +152,6 @@ def descargar_pdf():
     pdf.add_page()
     pdf.set_margins(12, 12, 12)
     
-    # 2. SECCIÓN DE DATOS DEL ESTUDIANTE (Estructura limpia)
     pdf.set_font('Arial', 'B', 10)
     pdf.cell(30, 5, "ESTUDIANTE:", ln=0)
     pdf.set_font('Arial', '', 10)
@@ -167,8 +163,6 @@ def descargar_pdf():
     pdf.cell(0, 5, u"INGENIERÍA DE SISTEMAS", ln=1)
     pdf.ln(6)
     
-    # 3. TABLA DE ASIGNATURAS INSCRITAS
-    # Ancho total disponible aproximado = 186mm
     pdf.set_font('Arial', 'B', 8)
     pdf.cell(6, 5, '', border=1, align='C')
     pdf.cell(10, 5, 'SEM', border=1, align='C')
@@ -182,7 +176,6 @@ def descargar_pdf():
     for index, m in enumerate(datos_estudiante['materias'], start=1):
         materia_nombre = m['materia'].upper()
         
-        # Asignación de códigos simulados/reales basados en la captura
         if "CÁLCULO" in materia_nombre or "CALCULO" in materia_nombre:
             codigo = "MAT-31714"
         elif "LENGUAJES" in materia_nombre:
@@ -214,7 +207,6 @@ def descargar_pdf():
     pdf.cell(0, 5, 'HORARIO DE CLASES', align='C', ln=1)
     pdf.ln(4)
     
-    # 4. MATRIZ DE HORARIO
     dias = ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom']
     horas_bloques = [
         "7:00 - 7:45", "7:45 - 8:30", "8:30 - 9:15", "9:15 - 10:00",
@@ -223,7 +215,6 @@ def descargar_pdf():
         "16:00 - 16:45", "16:45 - 17:30"
     ]
     
-    # Encabezados de la matriz (ENT / SAL | LUN | MAR...)
     pdf.set_font('Arial', 'B', 8.5)
     pdf.cell(26, 5, 'ENT / SAL', border=1, align='C')
     for d in dias:
