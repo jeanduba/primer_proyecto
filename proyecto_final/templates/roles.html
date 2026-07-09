@@ -54,6 +54,24 @@
         .oculto {
             display: none !important;
         }
+        
+        .btn-cerrar {
+    margin-top: 30px; 
+    background-color: #002244; 
+    color: white;
+    border: none;
+    padding: 10px 15px; 
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: inline-block; /* Asegura que respete los márgenes y paddings */
+}
+
+.btn-cerrar:hover {
+    background-color: #cc0000; /* Cambia a rojo al pasar el mouse (opcional, ideal para cerrar sesión) */
+}
     </style>
 </head>
 <body>
@@ -74,4 +92,6 @@
             <a href="/horario" class="btn-rol" id="btn-estudiante" style="text-decoration: none";>Estudiante</a>
         {% endif %}
     </div>
+   <button type="button" class="btn-cerrar" onclick="location.href='/logout'">Cerrar Sesión</button>
 </div>
+ 
