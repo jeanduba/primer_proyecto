@@ -13,7 +13,7 @@
       color: #333;
     }
 
-    .barra-superior {
+    .barra-superior { 
       background-color: #002244; 
       color: white;
       padding: 20px;
@@ -47,6 +47,15 @@
       border-color: white;
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
+    
+    .logo-login {
+            width: 70px;
+            height: auto;
+            margin-bottom: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
 
     .titulo {
       margin: 0;
@@ -355,6 +364,7 @@
 
   <header class="barra-superior">
     <a href="/roles" class="btn-volver-coor">← Volver a Panel</a>
+    <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo-login">
     <h1 class="titulo">SICEU - GESTIÓN DE HORARIOS</h1>
     <p class="subtitulo">Panel de Control General • Rol: Coordinador Académico</p>
   </header>
