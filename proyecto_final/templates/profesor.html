@@ -27,6 +27,15 @@
       font-size: 26px;
       letter-spacing: 1px;
     }
+    
+    .logo-login {
+            width: 70px;
+            height: auto;
+            margin-bottom: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
 
     .subtitulo {
       margin: 5px 0 0 0;
@@ -34,29 +43,36 @@
       color: #cbd5e1;
     }
 
-    /* CONTENEDOR BOTÓN VOLVER ENLACE DIRECTO */
     .contenedor-navegacion {
       position: absolute;
-      top: 22px;
+      top: 40px;
       left: 20px;
     }
 
     .btn-volver {
-      background-color: #f1c40f;
-      color: #002244;
-      border: none;
-      padding: 8px 16px;
-      font-size: 13px;
+   position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(255, 255, 255, 0.15);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 10px 18px;
+      font-size: 14px;
       font-weight: bold;
       border-radius: 4px;
       cursor: pointer;
       text-decoration: none;
-      display: inline-block;
-      transition: background 0.2s ease;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
     }
 
     .btn-volver:hover {
-      background-color: #d4ac0d;
+     background-color: rgba(255, 255, 255, 0.25);
+      border-color: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
 
     .area-principal {
@@ -169,6 +185,10 @@
       font-weight: bold;
       border-radius: 6px;
       cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .btn-guardar-horario:hover {
+      background-color: #10b981;
     }
 
     .alert-success {
@@ -188,6 +208,7 @@
     <div class="contenedor-navegacion">
       <a href="/roles" class="btn-volver">← Volver al Panel</a>
     </div>
+    <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo-login">
     <h1 class="titulo">REGISTRO DE DISPONIBILIDAD</h1>
     <p class="subtitulo">Panel del profesor - Período Académico Actual</p>
   </header>
