@@ -551,6 +551,7 @@
     function pintarHorarioDelProfesor(nombreProfesor) {
       const celdas = document.querySelectorAll('.mi-tabla td:not(.columna-hora)');
       celdas.forEach(celda => {
+        // Limpiamos los bloques previamente pintados de verde "Disponible"
         if (celda.innerHTML.includes("Disponible")) {
           celda.style.backgroundColor = "white";
           celda.innerHTML = "";
@@ -559,6 +560,7 @@
 
       if (!nombreProfesor) return; 
 
+      // Se ejecuta el fetch a la ruta de Flask corregida
       fetch(`/api/disponibilidad/${nombreProfesor}`)
         .then(response => response.json())
         .then(data => {

@@ -2,11 +2,17 @@ import json
 import os
 import hashlib
 from flask import Flask, request, render_template, jsonify, session, redirect, url_for, send_file
-from fpdf import FPDF
+# Se añadieron XPos y YPos para el correcto posicionamiento de celdas
+from fpdf import FPDF, XPos, YPos
 import io
 
 app = Flask(__name__)
 app.secret_key = 'clave_secreta_unefa_siceu'
+
+@app.route('/favicon.ico')
+def favicon():
+    return '', 204
+
 
 FICHERO_HORARIOS = 'horarios_asignados.json'
 FICHERO_INSCRIPCIONES = 'inscripciones_estudiantes.json'
@@ -56,22 +62,21 @@ if os.path.exists('usuarios.txt'):
 
 class PDFHorario(FPDF):
     def header(self):
-        
-        self.set_font('Arial', 'B', 9)
+        # Corrección: Cambio de 'Arial' a 'helvetica' y uso de new_x/new_y en vez de ln
+        self.set_font('helvetica', 'B', 9)
         self.set_xy(150, 12)
-        self.cell(45, 4, u'NÚCLEO', align='R', ln=1)
+        self.cell(45, 4, u'NÚCLEO', align='R', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
         self.set_x(150)
-        self.cell(45, 4, u'CARACAS', align='R', ln=1)
+        self.cell(45, 4, u'CARACAS', align='R', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
         self.set_x(150)
-        self.set_font('Arial', 'B', 10)
-        self.cell(45, 5, u'1-2026', align='R', ln=1)
+        self.set_font('helvetica', 'B', 10)
+        self.cell(45, 5, u'1-2026', align='R', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
         self.set_xy(35, 15)
-        self.set_font('Arial', 'B', 22)
+        self.set_font('helvetica', 'B', 22)
         self.set_text_color(0, 51, 153)
-        self.cell(110, 8, u'COMPROBANTE', align='L', ln=1)
+        self.cell(110, 8, u'COMPROBANTE', align='L', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
         self.set_x(35)
-        self.cell(110, 8, u'DE INSCRIPCIÓN', align='L', ln=1)
-        
+        self.cell(110, 8, u'DE INSCRIPCIÓN', align='L', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
         
         self.set_text_color(0, 0, 0)
         self.ln(15)
@@ -147,23 +152,23 @@ def descargar_pdf():
     if not datos_estudiante['materias']:
         return "No tienes materias inscritas para generar el PDF.", 400
 
-    # Configuración de página A4 con márgenes idóneos
     pdf = PDFHorario(orientation='P', unit='mm', format='A4')
     pdf.add_page()
     pdf.set_margins(12, 12, 12)
     
-    pdf.set_font('Arial', 'B', 10)
-    pdf.cell(30, 5, "ESTUDIANTE:", ln=0)
-    pdf.set_font('Arial', '', 10)
-    pdf.cell(0, 5, f"{usuario.upper()}" , ln=1)
+    # Correcciones de fuentes y parámetros ln
+    pdf.set_font('helvetica', 'B', 10)
+    pdf.cell(30, 5, "ESTUDIANTE:", new_x=XPos.RIGHT, new_y=YPos.TOP)
+    pdf.set_font('helvetica', '', 10)
+    pdf.cell(0, 5, f"{usuario.upper()}", new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
-    pdf.set_font('Arial', 'B', 10)
-    pdf.cell(30, 5, "PROGRAMA:", ln=0)
-    pdf.set_font('Arial', '', 10)
-    pdf.cell(0, 5, u"INGENIERÍA DE SISTEMAS", ln=1)
+    pdf.set_font('helvetica', 'B', 10)
+    pdf.cell(30, 5, "PROGRAMA:", new_x=XPos.RIGHT, new_y=YPos.TOP)
+    pdf.set_font('helvetica', '', 10)
+    pdf.cell(0, 5, u"INGENIERÍA DE SISTEMAS", new_x=XPos.LMARGIN, new_y=YPos.NEXT)
     pdf.ln(6)
     
-    pdf.set_font('Arial', 'B', 8)
+    pdf.set_font('helvetica', 'B', 8)
     pdf.cell(6, 5, '', border=1, align='C')
     pdf.cell(10, 5, 'SEM', border=1, align='C')
     pdf.cell(22, 5, 'COD-ASIG', border=1, align='C')
@@ -172,7 +177,7 @@ def descargar_pdf():
     pdf.cell(55, 5, 'DOCENTE', border=1, align='C')
     pdf.ln(5)
     
-    pdf.set_font('Arial', '', 7.5)
+    pdf.set_font('helvetica', '', 7.5)
     for index, m in enumerate(datos_estudiante['materias'], start=1):
         materia_nombre = m['materia'].upper()
         
@@ -203,8 +208,8 @@ def descargar_pdf():
         pdf.ln(5)
         
     pdf.ln(6)
-    pdf.set_font('Arial', 'B', 10)
-    pdf.cell(0, 5, 'HORARIO DE CLASES', align='C', ln=1)
+    pdf.set_font('helvetica', 'B', 10)
+    pdf.cell(0, 5, 'HORARIO DE CLASES', align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
     pdf.ln(4)
     
     dias = ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom']
@@ -215,14 +220,13 @@ def descargar_pdf():
         "16:00 - 16:45", "16:45 - 17:30"
     ]
     
-    pdf.set_font('Arial', 'B', 8.5)
+    pdf.set_font('helvetica', 'B', 8.5)
     pdf.cell(26, 5, 'ENT / SAL', border=1, align='C')
     for d in dias:
         pdf.cell(23, 5, d.upper(), border=1, align='C')
     pdf.ln(5)
     
-    # Rellenado estricto por bloques horarios
-    pdf.set_font('Arial', '', 8)
+    pdf.set_font('helvetica', '', 8)
     for h in horas_bloques:
         pdf.cell(26, 4.8, h, border=1, align='C')
         for d in dias:
@@ -230,11 +234,9 @@ def descargar_pdf():
             for m in datos_estudiante['materias']:
                 materia_nombre = m['materia'].upper()
                 for b in m['bloques']:
-                    # Normalización lingüística para validación de días
                     dia_b = b['dia'].strip().lower().replace(u'é', 'e')
                     dia_d = d.strip().lower()
                     
-                    # Mapeo de cabeceras compactas
                     mapeo_dias = {'lun': 'lunes', 'mar': 'martes', 'mie': u'miercoles', 'jue': 'jueves', 'vie': 'viernes', 'sab': 'sabado', 'dom': 'domingo'}
                     
                     if mapeo_dias.get(dia_d, '') == dia_b and b['hora'].strip() == h.strip():
@@ -254,12 +256,11 @@ def descargar_pdf():
             pdf.cell(23, 4.8, celda_codigo, border=1, align='C')
         pdf.ln(4.8)
         
-    # Pie de seguridad criptográfica discreto
     pdf.ln(7)
-    pdf.set_font('Arial', 'I', 6.5)
+    pdf.set_font('helvetica', 'I', 6.5)
     raw_data_string = json.dumps(datos_estudiante['materias'], sort_keys=True)
     full_md5 = hashlib.md5(raw_data_string.encode('utf-8')).hexdigest()
-    pdf.cell(0, 4, f"Firma Digital de Control Academico (MD5): {full_md5.upper()}", align='L', ln=1)
+    pdf.cell(0, 4, f"Firma Digital de Control Academico (MD5): {full_md5.upper()}", align='L', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
     buffer = io.BytesIO()
     pdf.output(buffer)
@@ -334,6 +335,13 @@ def profesor():
 
     bloques_guardados = disponibilidad_docentes.get(nombre_docente, [])
     return render_template('profesor.html', mensaje=mensaje, nombre_docente=nombre_docente, bloques_guardados=bloques_guardados)
+
+@app.route('/api/disponibilidad/<nombre_profesor>', methods=['GET'])
+def api_disponibilidad_docente(nombre_profesor):
+    # Buscamos la disponibilidad en el diccionario global
+    bloques = disponibilidad_docentes.get(nombre_profesor, [])
+    return jsonify({"success": True, "bloques": bloques})
+
 
 @app.route('/roles')
 def ver_roles():
